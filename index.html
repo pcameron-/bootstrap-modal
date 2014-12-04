@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap 101 Template</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+</head>
+<body>
+  <nav class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">bootstrap-modal.js</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Options
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="titleInput">Title</label>
+              <input type="text" class="form-control" id="titleInput" placeholder="Enter title">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="checkbox">
+              <label>
+                <input id="showHeaderCloseButton" type="checkbox" checked>
+                Show close button on header
+              </label>
+            </div>
+            <div class="checkbox">
+              <label>
+                <input id="showFooterCloseButton" type="checkbox" checked>
+                Show close button on footer
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-3">
+
+          </div>
+        </div>
+      </div>
+      <div class="panel-footer">
+        <button id="createModalBtn" class="btn btn-primary">Create Modal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+  <script src="js/bootstrap-modal.js"></script>
+
+  <script>
+    $('#createModalBtn').click(function() {
+      var modalOptions = {
+        title: $('#titleInput').val(),
+        closeButton: {
+          showOnHeader: $('#showHeaderCloseButton').is(':checked'),
+          showOnFooter: $('#showFooterCloseButton').is(':checked')
+        }
+      };
+
+      $.bootstrap.modal(modalOptions).show();
+    });
+  </script>
+</body>
+</html>
