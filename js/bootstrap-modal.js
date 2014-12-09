@@ -8,7 +8,7 @@
 
   var templates = {
     dialog:
-      '<div class="modal fade" role="dialog">' +
+      '<div class="modal fade" tabindex="-1" role="dialog">' +
         '<div class="modal-dialog">' +
           '<div class="modal-content">' +
             '<div class="modal-body">' +
@@ -34,13 +34,15 @@
           '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
         '</button>',
       footer:'<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
-    }
+    },
+    clearfix : '<div class="clearfix"></div>'
   };
 
   var BootstrapModal = function (options) {
     var self = this;
-    self.options = $.extend({}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
+    self.options = $.extend(true, {}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
 
+    console.log(BootstrapModal.DEFAULTS);
     console.log(self.options)
 
     self.$dialog = $(templates.dialog);
@@ -49,32 +51,37 @@
     self.$modalBody = self.$dialog.find('.modal-body');
     self.$modalFooter = self.$dialog.find('.modal-footer');
 
-    var appendTo = $("body");
+    if (self.options.show) {
+      self.$dialog.attr('data-show', self.options.show);
+    }
 
     if (self.options.id) {
       self.$dialog.attr('id', self.options.id);
     }
 
-    if (self.options.title) {
-      self.$dialog.find(".modal-content").prepend(templates.header);
-      if (self.options.closeButton.showOnHeader) {
-        self.$dialog.find(".modal-header").prepend(templates.closeButton.header);
-      }
-      self.$dialog.find(".modal-title").html(self.options.title);
-    } else {
-      if (self.options.closeButton.showOnHeader) {
-        self.$dialog.find(".modal-content").prepend(templates.header);
-        self.$dialog.find(".modal-header").prepend(templates.closeButton.header);
-        self.$dialog.find(".modal-title").html('&nbsp;');
-      }
+    if (self.options.backdrop) {
+      self.$dialog.attr('data-backdrop', self.options.backdrop);
     }
+
+    if (self.options.keyboard) {
+      self.$dialog.attr('data-keyboard', self.options.keyboard);
+    }
+
+    self.setTitle(self.options.title);
 
     if (self.options.body) {
       self.$modalBody.html(self.options.body);
     }
 
     if (self.options.footer) {
-      self.$modalFooter.html(self.options.footer);
+      var footer = self.options.footer;
+      if (self.options.closeButton.showOnFooter) {
+        footer += templates.closeButton.footer;
+      }
+
+      self.$modalFooter.html(footer);
+    } else if (self.options.closeButton.showOnFooter) {
+      self.$modalFooter.html(templates.closeButton.footer);
     }
 
     self.$dialog.on("hidden.bs.modal", function (e) {
@@ -90,13 +97,10 @@
       self.refresh();
     });
 
-    self.$dialog.data('sp.modal', self);
-
-    appendTo.append(self.$dialog);
+    self.$dialog.data('pc.bs.modal', self);
   };
 
   BootstrapModal.DEFAULTS = {
-    backdrop: true,
     ajax: {
       type: 'get',
       cache: false
@@ -167,26 +171,68 @@
     return this.$dialog;
   };
 
+  BootstrapModal.prototype.setTitle = function (title) {
+    var self = this;
+    // Remove the prior modal header and add fresh version from the template.
+    self.$dialog.find(".modal-header").remove();
+    if (title) {
+      self.$dialog.find(".modal-content").prepend(templates.header);
+      if (self.options.closeButton.showOnHeader) {
+        self.$dialog.find(".modal-header").prepend(templates.closeButton.header);
+      }
+      self.$dialog.find(".modal-title").html(title);
+    } else if (self.options.closeButton.showOnHeader) {
+      self.$dialog.find(".modal-content").prepend(templates.header);
+      var $modalHeader = self.$dialog.find(".modal-header");
+      $modalHeader.prepend(templates.closeButton.header);
+      $modalHeader.append(templates.clearfix);
+      self.$dialog.find(".modal-title").remove();
+    }
+
+    return this;
+  };
+
   // PUBLIC METHODS
   // =================
+
+  $.bootstrap.configureModalDefaults = function (options) {
+    BootstrapModal.DEFAULTS = $.extend({}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
+  };
+
+  $.bootstrap.findModal = function (selector) {
+    return $(selector).data('pc.bs.modal');
+  };
 
   $.bootstrap.modal = function (options) {
     return new BootstrapModal(options);
   };
 
-  $.bootstrap.findModalById = function (selector) {
-    return $(selector).data('sp.modal');
+  $.bootstrap.modal.alert = function (message, callback) {
+    var alertModal = (new BootstrapModal({
+      title: 'Alert',
+      body: message,
+      footer: '<button class="btn btn-primary" data-dismiss="modal">OK</button>',
+      closeButton: {
+        showOnFooter: false
+      }
+    })).show();
+    alertModal.element().on('click', 'button[data-dismiss="modal"]', function () {
+      if ($.isFunction(callback)) {
+        callback();
+      }
+    });
+    return alertModal;
   };
 
   // DATA-API
   // =================
 
-  $(document).on('click.sp.modal.data-api', '[data-toggle=spmodal]', function (e) {
+  /*$(document).on('click.sp.modal.data-api', '[data-toggle=spmodal]', function (e) {
     var $this = $(this);
     var options = $this.data();
 
     e.preventDefault();
 
     $.bootstrap.modal(options).show();
-  });
+  });*/
 })(jQuery);
