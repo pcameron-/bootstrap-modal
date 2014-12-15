@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,8 +9,8 @@
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-
 </head>
+
 <body>
   <nav class="navbar navbar-inverse" role="navigation">
     <div class="container">
@@ -44,14 +45,12 @@
             <label>Close Button</label>
             <div class="checkbox">
               <label>
-                <input id="showHeaderCloseButton" type="checkbox" checked />
-                Show close button on header
+                <input id="showHeaderCloseButton" type="checkbox" checked /> Show close button on header
               </label>
             </div>
             <div class="checkbox">
               <label>
-                <input id="showFooterCloseButton" type="checkbox" checked />
-                Show close button on footer
+                <input id="showFooterCloseButton" type="checkbox" checked /> Show close button on footer
               </label>
             </div>
           </div>
@@ -59,20 +58,17 @@
             <label>Backdrop</label>
             <div class="radio">
               <label>
-                <input type="radio" name="backdropOptionRadios" value="true" checked>
-                true
+                <input type="radio" name="backdropOptionRadios" value="true" checked> true
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" name="backdropOptionRadios" value="false">
-                false
+                <input type="radio" name="backdropOptionRadios" value="false"> false
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" name="backdropOptionRadios" value="static">
-                static
+                <input type="radio" name="backdropOptionRadios" value="static"> static
               </label>
             </div>
           </div>
@@ -80,14 +76,12 @@
             <label>Keyboard</label>
             <div class="radio">
               <label>
-                <input type="radio" name="keyboardOptionRadios" value="true" checked>
-                true
+                <input type="radio" name="keyboardOptionRadios" value="true" checked> true
               </label>
             </div>
             <div class="radio">
               <label>
-                <input type="radio" name="keyboardOptionRadios" value="false">
-                false
+                <input type="radio" name="keyboardOptionRadios" value="false"> false
               </label>
             </div>
           </div>
@@ -106,9 +100,12 @@
             </div>
           </div>
         </div>
+        <h4>Code Example:</h4>
+        <pre><code>$.bootstrap.modal({ title: 'New Modal' }).show();</code></pre>
       </div>
       <div class="panel-footer">
-        <button id="createModalBtn" class="btn btn-primary">Create Modal</button>
+        <button type="button" id="createModalBtn" class="btn btn-primary">Create Modal</button>
+        <button type="button" class="btn btn-primary" data-toggle="bs.modal" data-title="TESTING323">Data API Modal</button>
       </div>
     </div>
     <div class="panel panel-default">
@@ -116,6 +113,11 @@
         Alert
       </div>
       <div class="panel-body">
+        <h4>Code Example:</h4>
+        <pre><code>$.bootstrap.modal.alert('Test message', function() {
+  alert('Alert was closed');
+});</code></pre>
+        <button type="button" id="showAlertModalBtn" class="btn btn-primary">Open Alert</button>
       </div>
     </div>
   </div>
@@ -148,9 +150,12 @@
       //setTimeout(function () { b.setTitle('TESTING CHANGE') }, 2000);
     });
 
-    $.bootstrap.modal.alert('Testing out an alert with the same code for a full modal', function() {
-      alert('something happened');
+    $('#showAlertModalBtn').click(function() {
+      $.bootstrap.modal.alert('Test message', function() {
+        alert('Alert was closed');
+      });
     });
   </script>
 </body>
+
 </html>
