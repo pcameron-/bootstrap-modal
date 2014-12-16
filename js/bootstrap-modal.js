@@ -52,9 +52,9 @@
       self.$dialog.attr('data-show', self.options.show);
     }
 
-    if (self.options.dialog) {
-      if (self.options.dialog.cssClass) {
-        self.$dialog.find('.modal-dialog').addClass(self.options.dialog.cssClass);
+    if (self.options.size) {
+      if (self.options.size in self.options.sizeMap) {
+        self.$dialog.find('.modal-dialog').addClass(self.options.sizeMap[self.options.size]);
       }
     }
 
@@ -114,6 +114,10 @@
     closeButton: {
       showOnHeader: true,
       showOnFooter: true
+    },
+    sizeMap: {
+      large: 'modal-lg',
+      small: 'modal-sm'
     }
   };
 
@@ -194,7 +198,7 @@
   // =================
 
   $.bootstrap.configureModalDefaults = function (options) {
-    BootstrapModal.DEFAULTS = $.extend({}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
+    BootstrapModal.DEFAULTS = $.extend(true, {}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
   };
 
   $.bootstrap.findModal = function (selector) {
