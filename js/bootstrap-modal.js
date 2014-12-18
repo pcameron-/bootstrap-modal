@@ -4,6 +4,14 @@
 * Patrick Cameron (www.pcameron.com)
 */
 
+if (typeof jQuery === 'undefined') {
+  throw new Error('bootstrap-modal.js requires jQuery');
+}
+
+if (typeof jQuery.fn.modal === 'undefined') {
+  throw new Error('bootstrap-modal.js requires Bootstrap JavaScript.');
+}
+
 (function ($) {
   "use strict";
 
@@ -12,38 +20,11 @@
     };
   }
 
-  var templates = {
-    dialog:
-    '<div class="modal fade" tabindex="-1" role="dialog">' +
-    '<div class="modal-dialog">' +
-    '<div class="modal-content">' +
-    '<div class="modal-body">' +
-    '</div>' +
-    '<div class="modal-footer">' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>',
-    header:
-    '<div class="modal-header">' +
-    '<h4 class="modal-title"></h4>' +
-    '</div>',
-    closeButton: {
-      header:
-      '<button type="button" class="close" data-dismiss="modal">' +
-      '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
-      '</button>',
-      footer: '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
-    },
-    clearfix: '<div class="clearfix"></div>',
-    ajaxErrorMessage: '<div class="alert alert-danger">{0}</div>'
-  };
-
   var BootstrapModal = function (options) {
     var self = this;
     self.options = $.extend(true, {}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
 
-    self.$dialog = $(templates.dialog);
+    self.$dialog = $(self.options.templates.modal);
     self.$modalContent = self.$dialog.find('.modal-content');
     self.$modalBody = self.$dialog.find('.modal-body');
     self.$modalFooter = self.$dialog.find('.modal-footer');
@@ -79,12 +60,12 @@
     if (self.options.footer) {
       var footer = self.options.footer;
       if (self.options.closeButton.showOnFooter) {
-        footer += templates.closeButton.footer;
+        footer += self.options.templates.closeButton.footer;
       }
 
       self.$modalFooter.html(footer);
     } else if (self.options.closeButton.showOnFooter) {
-      self.$modalFooter.html(templates.closeButton.footer);
+      self.$modalFooter.html(self.options.templates.closeButton.footer);
     }
 
     self.$dialog.on("hidden.bs.modal", function (e) {
@@ -118,6 +99,32 @@
     sizeMap: {
       large: 'modal-lg',
       small: 'modal-sm'
+    },
+    templates: {
+      modal:
+      '<div class="modal fade" tabindex="-1" role="dialog">' +
+      '<div class="modal-dialog">' +
+      '<div class="modal-content">' +
+      '<div class="modal-body">' +
+      '</div>' +
+      '<div class="modal-footer">' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '</div>',
+      header:
+      '<div class="modal-header">' +
+      '<h4 class="modal-title"></h4>' +
+      '</div>',
+      closeButton: {
+        header:
+        '<button type="button" class="close" data-dismiss="modal">' +
+        '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
+        '</button>',
+        footer: '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
+      },
+      clearfix: '<div class="clearfix"></div>',
+      ajaxErrorMessage: '<div class="alert alert-danger">{0}</div>'
     }
   };
 
@@ -136,11 +143,11 @@
         self.hideSpinner();
         self.$dialog.trigger('completed.ajax.bs.modal');
       }).fail(function (jqXHR, textStatus, errorThrown) {
-        self.$modalBody.html(templates.ajaxErrorMessage.replace('{0}', errorThrown));
+        self.$modalBody.html(self.options.templates.ajaxErrorMessage.replace('{0}', errorThrown));
         self.$dialog.trigger('failed.ajax.bs.modal', errorThrown);
       }).done(function (data) {
         if (data == "") {
-          self.$modalBody.html(templates.ajaxErrorMessage.replace('{0}', 'No data has been returned.'));
+          self.$modalBody.html(self.options.templates.ajaxErrorMessage.replace('{0}', 'No data has been returned.'));
         } else {
           self.$modalBody.html(data);
         }
@@ -178,16 +185,16 @@
     // Remove the prior modal header and add fresh version from the template.
     self.$dialog.find('.modal-header').remove();
     if (title) {
-      self.$dialog.find('.modal-content').prepend(templates.header);
+      self.$dialog.find('.modal-content').prepend(self.options.templates.header);
       if (self.options.closeButton.showOnHeader) {
-        self.$dialog.find('.modal-header').prepend(templates.closeButton.header);
+        self.$dialog.find('.modal-header').prepend(self.options.templates.closeButton.header);
       }
       self.$dialog.find('.modal-title').html(title);
     } else if (self.options.closeButton.showOnHeader) {
-      self.$dialog.find('.modal-content').prepend(templates.header);
+      self.$dialog.find('.modal-content').prepend(self.options.templates.header);
       var $modalHeader = self.$dialog.find('.modal-header');
-      $modalHeader.prepend(templates.closeButton.header);
-      $modalHeader.append(templates.clearfix);
+      $modalHeader.prepend(self.options.templates.closeButton.header);
+      $modalHeader.append(self.options.templates.clearfix);
       self.$dialog.find('.modal-title').remove();
     }
 
