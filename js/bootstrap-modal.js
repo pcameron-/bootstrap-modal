@@ -1,4 +1,4 @@
-/*!
+/*
 * bootstrap-modal.js
 * https://github.com/pcameron-/bootstrap-modal
 * Patrick Cameron (www.pcameron.com)
