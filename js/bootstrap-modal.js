@@ -103,23 +103,23 @@ if (typeof jQuery.fn.modal === 'undefined') {
     templates: {
       modal:
       '<div class="modal fade" tabindex="-1" role="dialog">' +
-      '<div class="modal-dialog">' +
-      '<div class="modal-content">' +
-      '<div class="modal-body">' +
-      '</div>' +
-      '<div class="modal-footer">' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
+        '<div class="modal-dialog">' +
+          '<div class="modal-content">' +
+            '<div class="modal-body">' +
+            '</div>' +
+            '<div class="modal-footer">' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
       '</div>',
       header:
       '<div class="modal-header">' +
-      '<h4 class="modal-title"></h4>' +
+        '<h4 class="modal-title"></h4>' +
       '</div>',
       closeButton: {
         header:
         '<button type="button" class="close" data-dismiss="modal">' +
-        '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
+          '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
         '</button>',
         footer: '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
       },
