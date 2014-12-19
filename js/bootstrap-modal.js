@@ -90,6 +90,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       cache: false
     },
     alert: {
+      title: 'Alert',
       backdrop: false
     },
     closeButton: {
@@ -218,7 +219,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
 
   $.bootstrap.modal.alert = function (message, callback) {
     return (new BootstrapModal({
-      title: 'Alert',
+      title: BootstrapModal.DEFAULTS.alert.title,
       body: message,
       footer: '<button class="btn btn-primary" data-dismiss="modal">OK</button>',
       backdrop: BootstrapModal.DEFAULTS.alert.backdrop,
@@ -228,7 +229,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
     }))
     .show()
     .element()
-    .on('click', 'button[data-dismiss="modal"]', function () {
+    .on('hidden.bs.modal', function () {
       if ($.isFunction(callback)) {
         callback();
       }
