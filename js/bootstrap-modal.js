@@ -1,8 +1,8 @@
 /*
-* bootstrap-modal.js
-* https://github.com/pcameron-/bootstrap-modal
-* Patrick Cameron (www.pcameron.com)
-*/
+ * bootstrap-modal.js
+ * https://github.com/pcameron-/bootstrap-modal
+ * Patrick Cameron (www.pcameron.com)
+ */
 
 if (typeof jQuery === 'undefined') {
   throw new Error('bootstrap-modal.js requires jQuery');
@@ -12,15 +12,14 @@ if (typeof jQuery.fn.modal === 'undefined') {
   throw new Error('bootstrap-modal.js requires Bootstrap JavaScript.');
 }
 
-(function ($) {
+(function($) {
   "use strict";
 
   if (!$.bootstrap) {
-    $.bootstrap = function () {
-    };
+    $.bootstrap = function() {};
   }
 
-  var BootstrapModal = function (options) {
+  var BootstrapModal = function(options) {
     var self = this;
     self.options = $.extend(true, {}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
 
@@ -52,7 +51,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
     }
 
     self.setTitle(self.options.title);
-	self.setBody(self.options.body);
+    self.setBody(self.options.body);
 
     if (self.options.footer) {
       var footer = self.options.footer;
@@ -65,7 +64,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       self.$modalFooter.html(self.options.templates.closeButton.footer);
     }
 
-    self.$dialog.on("hidden.bs.modal", function (e) {
+    self.$dialog.on("hidden.bs.modal", function(e) {
       // ensure we don't accidentally intercept hidden events triggered
       // by children of the current dialog. We shouldn't anymore now BS
       // namespaces its events; but still worth doing
@@ -74,7 +73,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       }
     });
 
-    self.$dialog.on("shown.bs.modal", function (e) {
+    self.$dialog.on("shown.bs.modal", function(e) {
       self.refresh();
     });
 
@@ -87,6 +86,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       cache: false
     },
     alert: {
+      footer: '<button class="btn btn-primary" data-dismiss="modal">OK</button>',
       title: 'Alert',
       backdrop: false
     },
@@ -99,26 +99,21 @@ if (typeof jQuery.fn.modal === 'undefined') {
       small: 'modal-sm'
     },
     templates: {
-      modal:
-      '<div class="modal fade" tabindex="-1" role="dialog">' +
+      modal: '<div class="modal fade" tabindex="-1" role="dialog">' +
         '<div class="modal-dialog">' +
-          '<div class="modal-content">' +
-            '<div class="modal-body">' +
-            '</div>' +
-            '<div class="modal-footer">' +
-            '</div>' +
-          '</div>' +
+        '<div class="modal-content">' +
+        '<div class="modal-body"></div>' +
+        '<div class="modal-footer"></div>' +
         '</div>' +
-      '</div>',
-      header:
-      '<div class="modal-header">' +
+        '</div>' +
+        '</div>',
+      header: '<div class="modal-header">' +
         '<h4 class="modal-title"></h4>' +
-      '</div>',
+        '</div>',
       closeButton: {
-        header:
-        '<button type="button" class="close" data-dismiss="modal">' +
+        header: '<button type="button" class="close" data-dismiss="modal">' +
           '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
-        '</button>',
+          '</button>',
         footer: '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'
       },
       clearfix: '<div class="clearfix"></div>',
@@ -126,7 +121,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
     }
   };
 
-  BootstrapModal.prototype.refresh = function () {
+  BootstrapModal.prototype.refresh = function() {
     var self = this;
 
     if (self.options.url) {
@@ -137,13 +132,13 @@ if (typeof jQuery.fn.modal === 'undefined') {
         type: self.options.ajax.type,
         cache: self.options.ajax.cache,
         data: self.options.data
-      }).always(function () {
+      }).always(function() {
         self.hideSpinner();
         self.$dialog.trigger('completed.ajax.bs.modal');
-      }).fail(function (jqXHR, textStatus, errorThrown) {
+      }).fail(function(jqXHR, textStatus, errorThrown) {
         self.$modalBody.html(self.options.templates.ajaxErrorMessage.replace('{0}', errorThrown));
         self.$dialog.trigger('failed.ajax.bs.modal', errorThrown);
-      }).done(function (data) {
+      }).done(function(data) {
         if (data === '') {
           self.$modalBody.html(self.options.templates.ajaxErrorMessage.replace('{0}', 'No data has been returned.'));
         } else {
@@ -154,38 +149,38 @@ if (typeof jQuery.fn.modal === 'undefined') {
     }
   };
 
-  BootstrapModal.prototype.showSpinner = function () {
+  BootstrapModal.prototype.showSpinner = function() {
     // TODO
     return this;
   };
 
-  BootstrapModal.prototype.hideSpinner = function () {
+  BootstrapModal.prototype.hideSpinner = function() {
     // TODO
     return this;
   };
 
-  BootstrapModal.prototype.show = function () {
+  BootstrapModal.prototype.show = function() {
     this.$dialog.modal('show');
     return this;
   };
 
-  BootstrapModal.prototype.hide = function () {
+  BootstrapModal.prototype.hide = function() {
     this.$dialog.modal('hide');
     return this;
   };
 
-  BootstrapModal.prototype.element = function () {
+  BootstrapModal.prototype.element = function() {
     return this.$dialog;
   };
 
-  BootstrapModal.prototype.setBody = function (content) {
+  BootstrapModal.prototype.setBody = function(content) {
     var self = this;
     if (content) {
       self.$dialog.find('.modal-body').html(content);
     }
   };
 
-  BootstrapModal.prototype.setTitle = function (title) {
+  BootstrapModal.prototype.setTitle = function(title) {
     var self = this;
     // Remove the prior modal header and add fresh version from the template.
     self.$dialog.find('.modal-header').remove();
@@ -209,41 +204,41 @@ if (typeof jQuery.fn.modal === 'undefined') {
   // PUBLIC METHODS
   // =================
 
-  $.bootstrap.configureModalDefaults = function (options) {
+  $.bootstrap.configureModalDefaults = function(options) {
     BootstrapModal.DEFAULTS = $.extend(true, {}, BootstrapModal.DEFAULTS, typeof options == 'object' && options);
   };
 
-  $.bootstrap.findModal = function (selector) {
+  $.bootstrap.findModal = function(selector) {
     return $(selector).data('pc.bs.modal');
   };
 
-  $.bootstrap.modal = function (options) {
+  $.bootstrap.modal = function(options) {
     return new BootstrapModal(options);
   };
 
-  $.bootstrap.modal.alert = function (message, callback) {
+  $.bootstrap.modal.alert = function(message, callback) {
     return (new BootstrapModal({
-      title: BootstrapModal.DEFAULTS.alert.title,
-      body: message,
-      footer: '<button class="btn btn-primary" data-dismiss="modal">OK</button>',
-      backdrop: BootstrapModal.DEFAULTS.alert.backdrop,
-      closeButton: {
-        showOnFooter: false
-      }
-    }))
-    .show()
-    .element()
-    .on('hidden.bs.modal', function () {
-      if ($.isFunction(callback)) {
-        callback();
-      }
-    });
+        title: BootstrapModal.DEFAULTS.alert.title,
+        body: message,
+        footer: BootstrapModal.DEFAULTS.alert.footer,
+        backdrop: BootstrapModal.DEFAULTS.alert.backdrop,
+        closeButton: {
+          showOnFooter: false
+        }
+      }))
+      .show()
+      .element()
+      .on('hidden.bs.modal', function() {
+        if ($.isFunction(callback)) {
+          callback();
+        }
+      });
   };
 
   // DATA-API
   // =================
 
-  $(document).on('click.bs.modal.data-api', '[data-toggle="bs.modal"]', function (e) {
+  $(document).on('click.bs.modal.data-api', '[data-toggle="bs.modal"]', function(e) {
     var $this = $(this);
     var options = $this.data();
 
