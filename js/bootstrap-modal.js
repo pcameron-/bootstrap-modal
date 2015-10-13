@@ -43,7 +43,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       self.$dialog.attr('id', self.options.id);
     }
 
-    if (!(self.options.backdrop === undefined)) {
+    if (self.options.backdrop !== undefined) {
       self.$dialog.attr('data-backdrop', self.options.backdrop);
     }
 
@@ -52,10 +52,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
     }
 
     self.setTitle(self.options.title);
-
-    if (self.options.body) {
-      self.$modalBody.html(self.options.body);
-    }
+	self.setBody(self.options.body);
 
     if (self.options.footer) {
       var footer = self.options.footer;
@@ -147,7 +144,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
         self.$modalBody.html(self.options.templates.ajaxErrorMessage.replace('{0}', errorThrown));
         self.$dialog.trigger('failed.ajax.bs.modal', errorThrown);
       }).done(function (data) {
-        if (data == "") {
+        if (data === '') {
           self.$modalBody.html(self.options.templates.ajaxErrorMessage.replace('{0}', 'No data has been returned.'));
         } else {
           self.$modalBody.html(data);
@@ -179,6 +176,13 @@ if (typeof jQuery.fn.modal === 'undefined') {
 
   BootstrapModal.prototype.element = function () {
     return this.$dialog;
+  };
+
+  BootstrapModal.prototype.setBody = function (content) {
+    var self = this;
+    if (content) {
+      self.$dialog.find('.modal-body').html(content);
+    }
   };
 
   BootstrapModal.prototype.setTitle = function (title) {
