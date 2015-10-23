@@ -94,6 +94,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       showOnHeader: true,
       showOnFooter: true
     },
+    notificationPlacement: 'top',
     sizeMap: {
       large: 'modal-lg',
       small: 'modal-sm'
@@ -101,15 +102,10 @@ if (typeof jQuery.fn.modal === 'undefined') {
     templates: {
       modal: '<div class="modal fade" tabindex="-1" role="dialog">' +
         '<div class="modal-dialog">' +
-        '<div class="modal-content">' +
-        '<div class="modal-body"></div>' +
-        '<div class="modal-footer"></div>' +
-        '</div>' +
+        '<div class="modal-content"><div class="modal-body"></div><div class="modal-footer"></div></div>' +
         '</div>' +
         '</div>',
-      header: '<div class="modal-header">' +
-        '<h4 class="modal-title"></h4>' +
-        '</div>',
+      header: '<div class="modal-header"><h4 class="modal-title"></h4></div>',
       closeButton: {
         header: '<button type="button" class="close" data-dismiss="modal">' +
           '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>' +
@@ -173,11 +169,53 @@ if (typeof jQuery.fn.modal === 'undefined') {
     return this.$dialog;
   };
 
+  BootstrapModal.prototype.clearNotification = function(content) {
+    var self = this;
+    if (content) {
+      // TODO: Implement bottom and (top and bottom) placement modes.
+      switch (self.options.notificationPlacement) {
+        default: self.$dialog.find('.modal-body-top-notification').clear();
+        break;
+      }
+    }
+
+    return self;
+  };
+
+  BootstrapModal.prototype.setNotification = function(content) {
+    var self = this;
+    if (content) {
+      // TODO: Implement bottom and (top and bottom) placement modes.
+      switch (self.options.notificationPlacement) {
+        default: var $topNotification = self.$dialog.find('.modal-body-top-notification');
+        if ($topNotification.length < 1) {
+          self.$modalBody.prepend('<div class="modal-body-top-notification">' + content + '</div>');
+        } else {
+          $topNotification.html(content);
+        }
+        break;
+      }
+    }
+
+    return self;
+  };
+
+  BootstrapModal.prototype.prependToBody = function(content) {
+    var self = this;
+    if (content) {
+      self.$dialog.find('.modal-body').prepend(content);
+    }
+
+    return self;
+  };
+
   BootstrapModal.prototype.setBody = function(content) {
     var self = this;
     if (content) {
       self.$dialog.find('.modal-body').html(content);
     }
+
+    return self;
   };
 
   BootstrapModal.prototype.setTitle = function(title) {
@@ -198,7 +236,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       self.$dialog.find('.modal-title').remove();
     }
 
-    return this;
+    return self;
   };
 
   // PUBLIC METHODS
