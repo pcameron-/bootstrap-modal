@@ -52,17 +52,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
 
     self.setTitle(self.options.title);
     self.setBody(self.options.body);
-
-    if (self.options.footer) {
-      var footer = self.options.footer;
-      if (self.options.closeButton.showOnFooter) {
-        footer += self.options.templates.closeButton.footer;
-      }
-
-      self.$modalFooter.html(footer);
-    } else if (self.options.closeButton.showOnFooter) {
-      self.$modalFooter.html(self.options.templates.closeButton.footer);
-    }
+    self.setFooter(self.options.footer);
 
     self.$dialog.on("hidden.bs.modal", function(e) {
       // ensure we don't accidentally intercept hidden events triggered
@@ -234,6 +224,21 @@ if (typeof jQuery.fn.modal === 'undefined') {
       $modalHeader.prepend(self.options.templates.closeButton.header);
       $modalHeader.append(self.options.templates.clearfix);
       self.$dialog.find('.modal-title').remove();
+    }
+
+    return self;
+  };
+
+  BootstrapModal.prototype.setFooter = function (content) {
+    var self = this;
+    if (content) {
+      if (self.options.closeButton.showOnFooter) {
+        content += self.options.templates.closeButton.footer;
+      }
+
+      self.$modalFooter.html(content);
+    } else if (self.options.closeButton.showOnFooter) {
+      self.$modalFooter.html(self.options.templates.closeButton.footer);
     }
 
     return self;
