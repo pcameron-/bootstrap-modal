@@ -1,0 +1,29 @@
+{
+  "name": "bootstrap-modl",
+  "description": "A wrapper around Boostrap's modal to provide ease of use helper methods.",
+  "keywords": [
+    "css",
+    "js",
+    "less",
+    "mobile-first",
+    "responsive",
+    "front-end",
+    "framework",
+    "web"
+  ],
+  "homepage": "https://github.com/pcameron-/bootstrap-modal",
+  "license": "MIT",
+  "moduleType": "globals",
+  "main": [
+    "js/bootstrap-modal.js"
+  ],
+  "ignore": [
+    "/.*",
+    "CONTRIBUTING.md",
+    "docs",
+    "js/tests"
+  ],
+  "dependencies": {
+    "jquery": "1.9.1 - 2"
+  }
+}
