@@ -46,7 +46,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       self.$dialog.attr('data-backdrop', self.options.backdrop);
     }
 
-    if (self.options.keyboard) {
+    if (typeof self.options.keyboard === 'boolean') {
       self.$dialog.attr('data-keyboard', self.options.keyboard);
     }
 
@@ -83,6 +83,17 @@ if (typeof jQuery.fn.modal === 'undefined') {
     closeButton: {
       showOnHeader: true,
       showOnFooter: true
+    },
+    confirm: {
+      backdrop: 'static',
+      cancelButton: {
+        text: 'Cancel',
+        cssClass: 'btn btn-default'
+      },
+      okayButton: {
+        text: 'OK',
+        cssClass: 'btn btn-primary'
+      }
     },
     notificationPlacement: 'top',
     sizeMap: {
@@ -199,6 +210,12 @@ if (typeof jQuery.fn.modal === 'undefined') {
     return self;
   };
 
+  BootstrapModal.prototype.hideBody = function() {
+    var self = this;
+    self.$dialog.find('.modal-body').hide();
+    return self;
+  };
+
   BootstrapModal.prototype.setBody = function(content) {
     var self = this;
     if (content) {
@@ -229,19 +246,49 @@ if (typeof jQuery.fn.modal === 'undefined') {
     return self;
   };
 
-  BootstrapModal.prototype.setFooter = function (content) {
+  BootstrapModal.prototype.setFooter = function(content) {
     var self = this;
-    if (content) {
-      if (self.options.closeButton.showOnFooter) {
-        content += self.options.templates.closeButton.footer;
-      }
+    var buttons = self.buildButtons();
+    self.$modalFooter.empty();
 
-      self.$modalFooter.html(content);
+    if (content) {
+      self.$modalFooter.append(content);
+      self.$modalFooter.append(buttons);
+
+      if (self.options.closeButton.showOnFooter) {
+        self.$modalFooter.append(self.options.templates.closeButton.footer);
+      }
     } else if (self.options.closeButton.showOnFooter) {
-      self.$modalFooter.html(self.options.templates.closeButton.footer);
+      self.$modalFooter.append(buttons);
+      self.$modalFooter.append(self.options.templates.closeButton.footer);
+    } else {
+      self.$modalFooter.append(buttons);
     }
 
     return self;
+  };
+
+  BootstrapModal.prototype.buildButtons = function() {
+    var self = this;
+    var buttons = [];
+    if (self.options.buttons) {
+      self.options.buttons.forEach(function(obj) {
+        var $button = $('<button>').addClass(obj.cssClass).html(obj.label);
+        if (obj.closeModal) {
+          $button.attr('data-dismiss', 'modal');
+        }
+        if ($.isFunction(obj.clickCallback)) {
+          self.$dialog.on("shown.bs.modal", function(e) {
+            $button.on('click', function(e) {
+              obj.clickCallback.call(this, e);
+            });
+          });
+        }
+        buttons.push($button);
+      });
+    }
+
+    return buttons;
   };
 
   // PUBLIC METHODS
@@ -276,6 +323,51 @@ if (typeof jQuery.fn.modal === 'undefined') {
           callback();
         }
       });
+  };
+
+  $.bootstrap.modal.confirm = function(obj, callback) {
+    var options = {};
+    if (typeof obj === 'object') {
+      options = obj;
+    } else if (typeof obj === 'string') {
+      options.title = obj;
+    }
+
+    var defaultOptions = {
+      buttons: [{
+        label: BootstrapModal.DEFAULTS.confirm.cancelButton.text,
+        cssClass: BootstrapModal.DEFAULTS.confirm.cancelButton.cssClass,
+        clickCallback: function() {
+          if ($.isFunction(callback)) {
+            callback(false);
+          }
+        },
+        closeModal: true
+      }, {
+        label: BootstrapModal.DEFAULTS.confirm.okayButton.text,
+        cssClass: BootstrapModal.DEFAULTS.confirm.okayButton.cssClass,
+        clickCallback: function() {
+          if ($.isFunction(callback)) {
+            callback(true);
+          }
+        },
+        closeModal: true
+      }],
+      backdrop: BootstrapModal.DEFAULTS.confirm.backdrop,
+      closeButton: {
+        showOnFooter: false,
+        showOnHeader: false
+      },
+      keyboard: false
+    };
+
+    var mergedOptions = $.extend(true, {}, defaultOptions, options);
+    var modal = (new BootstrapModal(mergedOptions)).show();
+    if (!mergedOptions.body || mergedOptions.body === '') {
+      modal.hideBody();
+    }
+
+    return modal;
   };
 
   // DATA-API
