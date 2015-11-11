@@ -1,8 +1,8 @@
 {
   "name": "bootstrap-modl",
   "description": "A wrapper around Boostrap's modal to provide ease of use helper methods.",
+  "version": "0.4",
   "keywords": [
-    "js",
     "mobile-first",
     "responsive",
     "front-end",
@@ -10,18 +10,17 @@
     "web"
   ],
   "homepage": "https://github.com/pcameron-/bootstrap-modal",
+  "author": "Patrick Cameron",
+  "main": "./js/bootstrap-modal",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcameron-/bootstrap-modal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pcameron-/bootstrap-modal/issues"
+  },
   "license": "MIT",
-  "moduleType": "globals",
-  "main": [
-    "js/bootstrap-modal.js"
-  ],
-  "ignore": [
-    "/.*",
-    "CONTRIBUTING.md",
-    "docs",
-    "js/tests"
-  ],
-  "dependencies": {
-    "jquery": "1.9.1 - 2"
-  }
+  "files": [
+    "js/*.js"
+  ]
 }
