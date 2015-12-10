@@ -274,6 +274,13 @@ if (typeof jQuery.fn.modal === 'undefined') {
     if (self.options.buttons) {
       self.options.buttons.forEach(function(obj) {
         var $button = $('<button>').addClass(obj.cssClass).html(obj.label);
+        if (obj.attrs) {
+          for (var key in obj.attrs) {
+            if (obj.attrs.hasOwnProperty(key)) {
+              $button.attr(key, obj.attrs[key]);
+            }
+          }
+        }
         if (obj.closeModal) {
           $button.attr('data-dismiss', 'modal');
         }
