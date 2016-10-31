@@ -63,7 +63,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
       }
     });
 
-    self.$dialog.on("shown.bs.modal", function(e) {
+    self.$dialog.on("shown.bs.modal", function() {
       self.refresh();
     });
 
@@ -285,7 +285,7 @@ if (typeof jQuery.fn.modal === 'undefined') {
           $button.attr('data-dismiss', 'modal');
         }
         if ($.isFunction(obj.clickCallback)) {
-          self.$dialog.on("shown.bs.modal", function(e) {
+          self.$dialog.on("shown.bs.modal", function() {
             $button.on('click', function(e) {
               obj.clickCallback.call(this, e);
             });
