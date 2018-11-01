@@ -1,6 +1,8 @@
 bootstrap-modal
 ===============
 
+NOTE: This is deprecated and no longer maintained.
+
 [![Bower](https://img.shields.io/bower/v/bootstrap-modl.svg)]()
 
 This is a helper for dynamic bootstrap 3 modals. This library is beneficial for those
